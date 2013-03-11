@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGameLEAP", "WindowsGameLEAP\WindowsGameLEAP\WindowsGameLEAP.csproj", "{67221A99-A9FD-4003-A6A1-806A46958C56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGameLEAPContent", "WindowsGameLEAP\WindowsGameLEAPContent\WindowsGameLEAPContent.contentproj", "{7896C041-2AB6-4EE2-996A-B13E1D3000B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeapLibrary", "LEAPLibrary\LeapLibrary.csproj", "{B2AA5DA6-0FA6-42A4-813F-0480460F0820}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67221A99-A9FD-4003-A6A1-806A46958C56}.Debug|x86.ActiveCfg = Debug|x86
+		{67221A99-A9FD-4003-A6A1-806A46958C56}.Debug|x86.Build.0 = Debug|x86
+		{67221A99-A9FD-4003-A6A1-806A46958C56}.Release|x86.ActiveCfg = Release|x86
+		{67221A99-A9FD-4003-A6A1-806A46958C56}.Release|x86.Build.0 = Release|x86
+		{7896C041-2AB6-4EE2-996A-B13E1D3000B9}.Debug|x86.ActiveCfg = Debug|x86
+		{7896C041-2AB6-4EE2-996A-B13E1D3000B9}.Release|x86.ActiveCfg = Release|x86
+		{B2AA5DA6-0FA6-42A4-813F-0480460F0820}.Debug|x86.ActiveCfg = Debug|x86
+		{B2AA5DA6-0FA6-42A4-813F-0480460F0820}.Debug|x86.Build.0 = Debug|x86
+		{B2AA5DA6-0FA6-42A4-813F-0480460F0820}.Release|x86.ActiveCfg = Release|x86
+		{B2AA5DA6-0FA6-42A4-813F-0480460F0820}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
