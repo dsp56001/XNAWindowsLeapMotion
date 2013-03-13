@@ -116,8 +116,8 @@ namespace LeapLibrary
                 {
                     // Get the first hand
                     hand = frame.Hands[0];
-                    if(DrawDebug)
-                        firstHandLoc = new Vector2(NormalizeWidth(hand.SphereCenter.x), NormalizeHeight( hand.SphereCenter.y));
+                    
+                    firstHandLoc = new Vector2(NormalizeWidth(hand.SphereCenter.x), NormalizeHeight( hand.SphereCenter.y));
                     // Check if the hand has any fingers
                     fingers = hand.Fingers;
                     if (!fingers.Empty)
@@ -159,9 +159,10 @@ namespace LeapLibrary
 
                 // Get gestures
                 gestures = frame.Gestures();
+                Gesture gesture;
                 for (int i = 0; i < gestures.Count; i++)
                 {
-                    Gesture gesture = gestures[i];
+                    gesture = gestures[i];
 
                     switch (gesture.Type)
                     {
@@ -236,9 +237,6 @@ namespace LeapLibrary
                     //SafeWriteLine("");
                 }
             }
-        
-
-            
             base.Update(gameTime);
         }
 

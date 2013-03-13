@@ -91,7 +91,15 @@ namespace WindowsGameLEAP
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //flash screen for gesture
+            if (leap.Gestures.Count == 0)
+            {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
+            }
+            else
+            {
+                GraphicsDevice.Clear(Color.DarkBlue);
+            }
 
             spriteBatch.Begin();
             //Text for LeapController
