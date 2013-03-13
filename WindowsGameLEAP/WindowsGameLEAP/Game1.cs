@@ -20,7 +20,9 @@ namespace WindowsGameLEAP
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        LeapComponet leap; 
+        LeapComponet leap;
+
+        SpriteFont font;
 
         public Game1()
         {
@@ -52,6 +54,7 @@ namespace WindowsGameLEAP
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            font = Content.Load<SpriteFont>("SpriteFont1");
 
             // TODO: use this.Content to load your game content here
         }
@@ -90,7 +93,10 @@ namespace WindowsGameLEAP
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            //Text for LeapController
+            spriteBatch.DrawString(font, leap.DebugLine, new Vector2(10, 10), Color.Wheat);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

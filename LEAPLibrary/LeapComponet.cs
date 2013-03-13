@@ -19,13 +19,29 @@ namespace LeapLibrary
     public class LeapComponet : Microsoft.Xna.Framework.DrawableGameComponent
     {
 
+        //Leap Classes
         XNALeapListener listener;
         Controller controller;
 
+        //internal drawing for debug
         SpriteBatch sb;
+
+        public bool DrawDebug;
+        string debugLine;
+        public string DebugLine { get { return debugLine; } }
 
         Texture2D fingerPointTexture;
         List<Vector2> fingerPoints;
+        FingerList  fingers;
+        public List<Finger> Fingers { get { return fingers.ToList<Finger>(); } }
+
+        GestureList gestures;
+        public List<Gesture> Gestures { get { return gestures.ToList<Gesture>(); } }
+
+        //first hand
+        Hand hand;
+        public Hand FirstHand { get { return hand; } }
+        Vector2 firstHandLoc;       //for drawing firsthand
 
         float width, height;
 
@@ -39,7 +55,7 @@ namespace LeapLibrary
 
             
             fingerPoints = new List<Vector2>();
-
+            this.DrawDebug = true;
         }
 
         /// <summary>
@@ -86,21 +102,24 @@ namespace LeapLibrary
                 //clear fingers
                 fingerPoints.Clear();
                 var frame = controller.Frame();
-                /*
+
+                debugLine = "";
+                
                 SafeWriteLine("Frame id: " + frame.Id
                         + ", timestamp: " + frame.Timestamp
                         + ", hands: " + frame.Hands.Count
                         + ", fingers: " + frame.Fingers.Count
                         + ", tools: " + frame.Tools.Count
                         + ", gestures: " + frame.Gestures().Count);
-                */
+                
                 if (!frame.Hands.Empty)
                 {
                     // Get the first hand
-                    Hand hand = frame.Hands[0];
-
+                    hand = frame.Hands[0];
+                    if(DrawDebug)
+                        firstHandLoc = new Vector2(NormalizeWidth(hand.SphereCenter.x), NormalizeHeight( hand.SphereCenter.y));
                     // Check if the hand has any fingers
-                    FingerList fingers = hand.Fingers;
+                    fingers = hand.Fingers;
                     if (!fingers.Empty)
                     {
                         // Calculate the hand's average finger tip position
@@ -115,31 +134,31 @@ namespace LeapLibrary
                             avgPos += finger.TipPosition;
                         }
                         avgPos /= fingers.Count;
-                        /*
+                        
                         SafeWriteLine("Hand has " + fingers.Count
                                     + " fingers, average finger tip position: " + avgPos);
-                         */
+                         
                     }
 
                     // Get the hand's sphere radius and palm position
-                    /*
+                    
                     SafeWriteLine("Hand sphere radius: " + hand.SphereRadius.ToString("n2")
                                 + " mm, palm position: " + hand.PalmPosition);
-                    */
+                    
                     // Get the hand's normal vector and direction
                     Vector normal = hand.PalmNormal;
                     Vector direction = hand.Direction;
 
                     // Calculate the hand's pitch, roll, and yaw angles
-                    /*
+                    
                     SafeWriteLine("Hand pitch: " + direction.Pitch * 180.0f / (float)Math.PI + " degrees, "
                                 + "roll: " + normal.Roll * 180.0f / (float)Math.PI + " degrees, "
                                 + "yaw: " + direction.Yaw * 180.0f / (float)Math.PI + " degrees");
-                     */
+                     
                 }
 
                 // Get gestures
-                GestureList gestures = frame.Gestures();
+                gestures = frame.Gestures();
                 for (int i = 0; i < gestures.Count; i++)
                 {
                     Gesture gesture = gestures[i];
@@ -169,45 +188,45 @@ namespace LeapLibrary
                                 CircleGesture previousUpdate = new CircleGesture(controller.Frame(1).Gesture(circle.Id));
                                 sweptAngle = (circle.Progress - previousUpdate.Progress) * 360;
                             }
-                            /*
+                            
                             SafeWriteLine("Circle id: " + circle.Id
                                            + ", " + circle.State
                                            + ", progress: " + circle.Progress
                                            + ", radius: " + circle.Radius
                                            + ", angle: " + sweptAngle
                                            + ", " + clockwiseness);
-                             */
+                             
                             break;
                         case Gesture.GestureType.TYPESWIPE:
                             SwipeGesture swipe = new SwipeGesture(gesture);
-                            /*
+                            
                             SafeWriteLine("Swipe id: " + swipe.Id
                                            + ", " + swipe.State
                                            + ", position: " + swipe.Position
                                            + ", direction: " + swipe.Direction
                                            + ", speed: " + swipe.Speed);
-                             */
+                             
                             break;
                         case Gesture.GestureType.TYPEKEYTAP:
                             KeyTapGesture keytap = new KeyTapGesture(gesture);
-                            /*
+                            
                             SafeWriteLine("Tap id: " + keytap.Id
                                            + ", " + keytap.State
                                            + ", position: " + keytap.Position
                                            + ", direction: " + keytap.Direction);
-                            */
+                            
                             break;
                         case Gesture.GestureType.TYPESCREENTAP:
                             ScreenTapGesture screentap = new ScreenTapGesture(gesture);
-                            /*
+                           
                             SafeWriteLine("Tap id: " + screentap.Id
                                            + ", " + screentap.State
                                            + ", position: " + screentap.Position
                                            + ", direction: " + screentap.Direction);
-                             */
+                             
                             break;
                         default:
-                            //SafeWriteLine("Unknown gesture type.");
+                            SafeWriteLine("Unknown gesture type.");
                             break;
                     }
                 }
@@ -221,6 +240,11 @@ namespace LeapLibrary
 
             
             base.Update(gameTime);
+        }
+
+        private void SafeWriteLine(string p)
+        {
+            this.debugLine += "\n" + p;
         }
 
         protected float NormalizeWidth(float f)
@@ -237,14 +261,16 @@ namespace LeapLibrary
 
         public override void Draw(GameTime gameTime)
         {
-            sb.Begin();
-
-            foreach(Vector2 fingerLoc in fingerPoints)
+            if (DrawDebug)
             {
-                sb.Draw(fingerPointTexture, fingerLoc, Color.White);
+                sb.Begin();
+                foreach (Vector2 fingerLoc in fingerPoints)
+                {
+                    sb.Draw(fingerPointTexture, fingerLoc, Color.White);
+                    sb.Draw(fingerPointTexture, firstHandLoc, Color.Red);
+                }
+                sb.End();
             }
-
-            sb.End();
             base.Draw(gameTime);
         }
     
